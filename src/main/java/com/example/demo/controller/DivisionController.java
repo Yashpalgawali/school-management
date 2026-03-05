@@ -24,29 +24,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DivisionController {
 
-	private final IDivisionService devisionserv;
+	private final IDivisionService divisionserv;
 	
 	@PostMapping("/")
-	public ResponseEntity<ResponseDto> saveDesignation(@Valid @RequestBody Division division) {
-		devisionserv.saveDivision(division);
-		return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(HttpStatus.CREATED.toString(), "Designation "+division.getDivision()+" is created successfully"));
+	public ResponseEntity<ResponseDto> saveDivision(@Valid @RequestBody Division division) {
+		divisionserv.saveDivision(division);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(HttpStatus.CREATED.toString(), "Division "+division.getDivision()+" is created successfully"));
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Division> retrieveDesignationById(@PathVariable Long id) {
-		var divisionObject = devisionserv.retrieveDivisionById(id);
+		var divisionObject = divisionserv.retrieveDivisionById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(divisionObject);
 	}
 	
 	@GetMapping("/")
 	public ResponseEntity<List<Division>> getAllDivisions() {
-		var divisionList = devisionserv.getAllDivisions();
+		var divisionList = divisionserv.getAllDivisions();
 		return ResponseEntity.status(HttpStatus.OK).body(divisionList);
 	}
 	
 	@PutMapping("/")
-	public ResponseEntity<ResponseDto> updateDesignation(@Valid @RequestBody Division division) {
-		devisionserv.updateDivision(division);
+	public ResponseEntity<ResponseDto> updateDivision(@Valid @RequestBody Division division) {
+		divisionserv.updateDivision(division);
 		return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(HttpStatus.OK.toString(), "Division "+division.getDivision()+" is updated successfully"));
 	}
 }
