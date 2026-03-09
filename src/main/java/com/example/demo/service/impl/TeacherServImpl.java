@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Teacher;
 import com.example.demo.exception.GlobalException;
@@ -42,9 +43,13 @@ public class TeacherServImpl implements ITeacherService {
 	}
 
 	@Override
+	@Transactional
 	public void updateTeacher(Teacher teacher) {
-
-
+		
+		int res = teacherrepo.updateTeacher(teacher.getTeacherId(), teacher.getTeacherName(), teacher.getClassObj().getClassId() , 
+				teacher.getStaffCategory().getStaffCategoryId());
+		if(res < 0 )	
+			throw new GlobalException("Teacher "+teacher.getTeacherName()+" is not updated");
 	}
 
 }

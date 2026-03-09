@@ -33,4 +33,7 @@ public class Teacher {
 	@JoinColumn(name="class_id")
 	Class classObj;
 	
+	@ManyToOne
+	@JoinColumn(name = "staff_category_id")
+	StaffCategory staffCategory;
 }
