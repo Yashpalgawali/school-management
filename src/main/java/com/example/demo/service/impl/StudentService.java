@@ -1,8 +1,10 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Class;
 import com.example.demo.entity.Student;
@@ -28,17 +30,22 @@ public class StudentService implements IStudentService {
 	
 	@Override
 	public void saveStudent(Student student) {
+		System.err.println("Student to be saved \n "+student.toString());
 		
-		Student found = this.getStudentByAadhar(student.getAadharNumber());
-		if(found !=null) {
-			throw new GlobalException("Student with the Aadhar number "+student.getAadharNumber()+" is already registered");
+		Optional<Student> found = studrepo.findByAadharNumberOrRegistrationNumber(student.getAadharNumber(), student.getRegistrationNumber());
+		if(found.isPresent()) {
+			if(student.getAadharNumber()==found.get().getAadharNumber()) {				
+				throw new GlobalException("Student with the Aadhar number "+student.getAadharNumber()+" is already registered");
+			}
+			if(student.getRegistrationNumber().equals(found.get().getRegistrationNumber())) {
+				throw new GlobalException("Student with the Registration Number "+student.getRegistrationNumber()+" is already registered");
+			}
 		}
 		else {
 			Student savedStudent = studrepo.save(student);
 			if(savedStudent == null)
 				throw new GlobalException("Student "+student.getStudentFirstName()+" "+student.getStudentLastName()+" is not saved"); 
 		}
-
 	}
 
 	@Override
@@ -73,7 +80,7 @@ public class StudentService implements IStudentService {
 	public List<Student> getAllStudentsByClass(Long classId) {
 		
 		Class classObj = classServ.retrieveClassByID(classId);
-		
+
 		List<Student> studList = studrepo.findByClassObj(classObj);
 		if(studList.size() > 0) {
 			return studList;
@@ -89,8 +96,7 @@ public class StudentService implements IStudentService {
 		Teacher teacherObj = teacherserv.retrieveTeacherById(teacherId);
 		
 		var studList = studrepo.findByClassObj(teacherObj.getClassObj());
-		if(studList.size() > 0)
-		{
+		if(studList.size() > 0) {
 			return studList;
 		}
 		else {
@@ -99,6 +105,7 @@ public class StudentService implements IStudentService {
 	}
 
 	@Override
+	@Transactional
 	public void updateStudent(Student student) {
 		int res = studrepo.updateStudent(student.getStudentId(), student.getStudentFirstName(), student.getStudentMiddleName(), student.getStudentLastName(), student.getContactNumber(), student.getAadharNumber(), student.getRegistrationNumber(), student.getStudentAddress());
 		if(res<0)

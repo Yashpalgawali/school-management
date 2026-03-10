@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,13 +19,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name= "tbl_student")
+@Table(name= "tbl_student", 
+uniqueConstraints = {
+        @UniqueConstraint(columnNames = "aadharNumber"),
+        @UniqueConstraint(columnNames = "registrationNumber")
+    }	)
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 @Validated
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@ToString
 public class Student {
 
 	@Id
@@ -51,6 +58,12 @@ public class Student {
 	Long contactNumber;
 
 	String registrationNumber;
+	
+	String dateOfAdmission;
+	
+	String dob;
+	
+	String dateOfLeaving;
 	
 	@ManyToOne
 	@JoinColumn(name = "class_id")
