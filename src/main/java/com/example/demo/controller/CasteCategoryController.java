@@ -29,7 +29,7 @@ public class CasteCategoryController {
 	@PostMapping("/")
 	public ResponseEntity<ResponseDto> savecastecategory(@Valid @RequestBody CasteCategory castecategory) {
 		castecategoryserv.saveCasteCategory(castecategory);
-		return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(HttpStatus.CREATED.toString(), "castecategory "+castecategory.getCasteCategory()+" is created successfully"));
+		return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(HttpStatus.CREATED.toString(), "Caste Category "+castecategory.getCasteCategory()+" is created successfully"));
 	}
 	
 	@GetMapping("/{id}")
@@ -48,6 +48,6 @@ public class CasteCategoryController {
 	@PutMapping("/")
 	public ResponseEntity<ResponseDto> updatecastecategory(@Valid @RequestBody CasteCategory castecategory) {
 		castecategoryserv.updateCasteCategory(castecategory);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(HttpStatus.OK.toString(), "castecategory "+castecategory.getCasteCategory()+" is updated successfully"));
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(HttpStatus.OK.toString(), "Caste Category "+castecategory.getCasteCategory()+" is updated successfully"));
 	}
 }
